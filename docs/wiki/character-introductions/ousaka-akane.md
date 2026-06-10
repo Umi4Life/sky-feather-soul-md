@@ -47,7 +47,9 @@ you may help me conquer the world!
 Working English summary:
 
 ```text
-An outrageous, chaotic student council president. She acts immediately once an idea occurs to her, causing enough trouble to earn the nickname “Kanasaka's Red Calamity.” When incidents happen at school, Akane is usually said to be the cause. Her hobby is world conquest; she enthusiastically wears a cape and remodels the student council room like a secret society hideout, though she often gets carried away and receives a severe lecture from Kaede.
+An outrageous, chaotic student council president. 
+She acts immediately once an idea occurs to her, causing enough trouble to earn the nickname “Kanasaka's Red Calamity.” When incidents happen at school, Akane is usually said to be the cause. 
+Her hobby is world conquest; she enthusiastically wears a cape and remodels the student council room like a secret society hideout, though she often gets carried away and receives a severe lecture from Kaede.
 ```
 
 ## Character Profile Implications

@@ -47,7 +47,9 @@ Heave-ho, heave-ho
 Working English summary:
 
 ```text
-A strange girl wrapped in a costume. She has an elusive, airy atmosphere and a unique sense of taste that is somehow slightly off. Her dogs are named “Karubi” and “Roosu.” She holds an important position and is even called the next academy director; rumors say she is active behind the scenes. If you see a suspicious costume on campus, watch over it warmly.
+A strange girl wrapped in a costume. 
+She has an elusive, airy atmosphere and a unique sense of taste that is somehow slightly off. Her dogs are named “Karubi” and “Roosu.” 
+She holds an important position and is even called the next academy director; rumors say she is active behind the scenes. If you see a suspicious costume on campus, watch over it warmly.
 ```
 
 ## Character Profile Implications

@@ -46,7 +46,9 @@ It seems you need a little discipline.
 Working English summary:
 
 ```text
-An elite girl raised with gifted education. She believes that, to achieve an objective, it can be unavoidable to cut away smaller matters. Because of her upbringing, she carries an intimidating and hard-to-approach atmosphere. She studied overseas for a long time, but returned out of concern for Kanasaka Academy's current state. Though their surnames differ, she and Suzushima Arisu are sisters.
+An elite girl raised with gifted education. 
+She believes that, to achieve an objective, it can be unavoidable to cut away smaller matters. Because of her upbringing, she carries an intimidating and hard-to-approach atmosphere. 
+She studied overseas for a long time, but returned out of concern for Kanasaka Academy's current state. Though their surnames differ, she and Suzushima Arisu are sisters.
 ```
 
 ## Character Profile Implications

@@ -45,7 +45,9 @@ Hey, carry me on your back? You can carry me around?
 Working English summary:
 
 ```text
-A lazy gamer girl. She is extremely troublesome and tries to skip work whenever she can. She often looks somewhat sleepy. She says that her futon is her lover. She loves video games so much that she carries a portable game console with her at all times. After school, she brings snacks and manga into the empty classroom she has occupied and enjoys a leisurely time of self-indulgence.
+A lazy gamer girl. 
+She is extremely troublesome and tries to skip work whenever she can. She often looks somewhat sleepy. She says that her futon is her lover. 
+She loves video games so much that she carries a portable game console with her at all times. After school, she brings snacks and manga into the empty classroom she has occupied and enjoys a leisurely time of self-indulgence.
 ```
 
 ## Character Profile Implications

@@ -45,7 +45,9 @@ Sounds like you need more guidance.
 Working English summary:
 
 ```text
-The cool and composed student council vice president. She takes measures to bring out maximum efficacy with the least amount of trouble. She is scary when angered, as others say, and many rumors about her persist among students. She is ignorant about machines, which often interferes with daily life, so she tries to use them as little as possible because she does not know when they might explode. According to her, a broken smartphone can be fixed by simply tapping it.
+The cool and composed student council vice president. 
+She takes measures to bring out maximum efficacy with the least amount of trouble. She is scary when angered, as others say, and many rumors about her persist among students.
+She is ignorant about machines, which often interferes with daily life, so she tries to use them as little as possible because she does not know when they might explode. According to her, a broken smartphone can be fixed by simply tapping it.
 ```
 
 ## Character Profile Implications

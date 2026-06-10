@@ -47,7 +47,9 @@ just a little.
 Working English summary:
 
 ```text
-A cool, contrary first-year student with a somewhat detached view of things. She is quiet and not good at showing emotion, so she often comes across as blunt, but deep down she cares about her friends. She has a slightly sadistic teasing streak and often makes provocative comments; apparently that chilling gaze has earned her hidden fans.
+A cool, contrary first-year student with a somewhat detached view of things. 
+She is quiet and not good at showing emotion, so she often comes across as blunt, but deep down she cares about her friends. 
+She has a slightly sadistic teasing streak and often makes provocative comments; apparently that chilling gaze has earned her hidden fans.
 ```
 
 ## Character Profile Implications
