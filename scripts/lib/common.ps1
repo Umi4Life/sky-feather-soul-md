@@ -3,9 +3,13 @@
 . (Join-Path $PSScriptRoot 'paths.ps1')
 
 function Get-SfCharactersJsonPath {
-    $globalJson = Join-Path (Get-SfSkyFeatherMirror) 'scripts-lib\characters.json'
-    if (Test-Path $globalJson) {
-        return $globalJson
+    $hermesJson = Join-Path (Get-SfHermesMirror) 'scripts-lib\characters.json'
+    if (Test-Path $hermesJson) {
+        return $hermesJson
+    }
+    $cursorJson = Join-Path (Get-SfSkyFeatherMirror) 'scripts-lib\characters.json'
+    if (Test-Path $cursorJson) {
+        return $cursorJson
     }
     return Join-Path (Get-SfScriptsDir) 'lib\characters.json'
 }
@@ -53,6 +57,15 @@ function Get-SfCharacterById {
     $char = $config.characters | Where-Object { $_.id -eq $Id } | Select-Object -First 1
     if (-not $char) { throw "character not found: $Id" }
     return $char
+}
+
+function Get-SfCharacterPersonalityKey {
+    param([Parameter(Mandatory)][string]$Id)
+    $char = Get-SfCharacterById -Id $Id
+    if (-not $char.personalityKey) {
+        throw "missing personalityKey for character: $Id"
+    }
+    return $char.personalityKey
 }
 
 function Build-SfBundleFile {

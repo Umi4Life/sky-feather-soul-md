@@ -6,22 +6,15 @@ The goal is to keep character voice work grounded in source material while separ
 
 ## Character Index
 
-| Character | Source | Profile |
-|---|---|---|
-| [Sky Feather](sky-feather.md) | CHUNITHM | ![Sky Feather](assets/profile/sky-feather.png) |
-| [Aihara Tsubaki](aihara-tsubaki.md) | Ongeki | ![Aihara Tsubaki](assets/profile/aihara-tsubaki.png) |
-| [Ousaka Akane](ousaka-akane.md) | Ongeki | ![Ousaka Akane](assets/profile/ousaka-akane.png) |
-| [Suzushima Arisu](suzushima-arisu.md) | Ongeki | ![Suzushima Arisu](assets/profile/suzushima-arisu.png) |
-| [Sumeragi Setsuna](sumeragi-setsuna.md) | Ongeki | ![Sumeragi Setsuna](assets/profile/sumeragi-setsuna.png) |
-| [Kujo Kaede](kujo-kaede.md) | Ongeki | ![Kujo Kaede](assets/profile/kujo-kaede.png) |
-| [Inohara Koboshi](inohara-koboshi.md) | Ongeki | ![Inohara Koboshi](assets/profile/inohara-koboshi.png) |
-
-## Image Notes
-
-- Ongeki profile images use the official `image_normal.png` assets from each character page.
-- Sky Feather uses the single official CHUNITHM character illustration currently exposed by the character page.
-- Local `assets/profile/*.png` files are square crops for wiki/profile display.
-- Local `assets/full/*` files preserve the downloaded source images used to make those crops.
+| Character | Source | Profile | Role |
+|---|---|---|---|
+| [Sky Feather](sky-feather.md) | CHUNITHM | ![Sky Feather](assets/profile/sky-feather.png) | Default character profile |
+| [Aihara Tsubaki](aihara-tsubaki.md) | Ongeki | ![Aihara Tsubaki](assets/profile/aihara-tsubaki.png) | Pair-programmer / debugging companion |
+| [Ousaka Akane](ousaka-akane.md) | Ongeki | ![Ousaka Akane](assets/profile/ousaka-akane.png) | Brainstorm / ideation / ambition mode |
+| [Suzushima Arisu](suzushima-arisu.md) | Ongeki | ![Suzushima Arisu](assets/profile/suzushima-arisu.png) | Cozy lab / tinkering / exploration character |
+| [Sumeragi Setsuna](sumeragi-setsuna.md) | Ongeki | ![Sumeragi Setsuna](assets/profile/sumeragi-setsuna.png) | Architect / reviewer / technical leadership character |
+| [Kujo Kaede](kujo-kaede.md) | Ongeki | ![Kujo Kaede](assets/profile/kujo-kaede.png) | Strict ops / maintainer / process discipline |
+| [Inohara Koboshi](inohara-koboshi.md) | Ongeki | ![Inohara Koboshi](assets/profile/inohara-koboshi.png) | Automation / developer experience / workflow optimization |
 
 ## Usage Notes
 

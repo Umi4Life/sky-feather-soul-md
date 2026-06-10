@@ -78,12 +78,12 @@ Outcomes you should expect:
 | [CORE.md](CORE.md) | Durable character-neutral engineering doctrine |
 | [SOUL.md](SOUL.md) | Historical single-file Sky Feather reference |
 | [characters/](characters/) | Character profiles: Sky Feather, Suzushima Arisu, Sumeragi Setsuna, Aihara Tsubaki, Ousaka Akane, Kujo Kaede, Inohara Koboshi |
+| [character-introductions/](docs/wiki/character-introductions/README.md) | Official-source character introduction wiki and profiles |
 | [skills/](skills/) | Workflow modules: scientific method, debugging, architecture review, journal, GSD |
 | [examples/](examples/) | Runtime composition examples for Discord Hermes and Cursor |
 | [docs/runtime-composition.md](docs/runtime-composition.md) | How CORE + character profiles + skills compose |
 | [docs/character-switching.md](docs/character-switching.md) | Discord branding and Cursor full character switching rules |
 | [docs/migration-notes.md](docs/migration-notes.md) | V3 migration notes from single SOUL.md |
-| [docs/wiki/character-introductions/](docs/wiki/character-introductions/) | Official-source character introduction wiki and profile crops |
 | [docs/cursor-quickstart.md](docs/cursor-quickstart.md) | One-page Cursor install / switch / update cheat sheet |
 | [scripts/install-cursor-global.sh](scripts/install-cursor-global.sh) | Global Cursor install (macOS / Linux / Git Bash) |
 | [scripts/install-cursor-global.ps1](scripts/install-cursor-global.ps1) | Global Cursor install (Windows PowerShell) |

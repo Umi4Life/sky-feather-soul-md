@@ -4,7 +4,7 @@
 
 Support two different usage models:
 
-1. **Discord Hermes:** public identity remains Sky Feather.
+1. **Discord Hermes:** public identity remains Sky Feather; modes via `/personality <preset>`.
 2. **Cursor / coding agents:** full character profiles can be selected directly.
 
 ## Discord Hermes Branding Rule
@@ -35,6 +35,53 @@ Sky Feather: Cozy Lab Mode
 Sky Feather: Brainstorm Mode
 Sky Feather: Ops Mode
 Sky Feather: Automation Mode
+```
+
+## Discord Hermes — `/personality` presets (primary)
+
+Install writes presets to `~/.hermes/config.yaml`. Switch modes in Discord with Hermes `/personality`:
+
+| Preset key | Character id | Public Discord label |
+|------------|--------------|----------------------|
+| `sky-feather` | `sky-feather` | Sky Feather |
+| `setsuna` | `sumeragi-setsuna` | Sky Feather: Architect Mode |
+| `tsubaki` | `aihara-tsubaki` | Sky Feather: Pair-Programming Mode |
+| `arisu` | `suzushima-arisu` | Sky Feather: Cozy Lab Mode |
+| `akane` | `ousaka-akane` | Sky Feather: Brainstorm Mode |
+| `kaede` | `kujo-kaede` | Sky Feather: Ops Mode |
+| `koboshi` | `inohara-koboshi` | Sky Feather: Automation Mode |
+
+```text
+/personality sky-feather
+/personality setsuna
+/personality kaede
+```
+
+No gateway restart required for personality changes. See [hermes.md](hermes.md) for install and upgrades.
+
+Character **aliases** (`feather`, `architect`, `ops`, …) still work for bash switch scripts; `/personality` uses **preset keys** only.
+
+## Discord Hermes — legacy server-wide switch (ops)
+
+Rewrites `~/.hermes/SOUL.md` for the whole gateway. Requires restart.
+
+```bash
+bash scripts/switch-hermes-character.sh <id-or-alias>
+sudo systemctl restart hermes-gateway
+```
+
+Prefer `/personality` for Discord. Print preset key without touching SOUL:
+
+```bash
+bash scripts/switch-hermes-character.sh setsuna --personality-only
+```
+
+### Future in-Discord syntax (Route C — not shipped)
+
+```text
+/hermes character sky-feather
+/hermes character arisu
+/hermes character setsuna
 ```
 
 ## Cursor Full Character Switching
@@ -71,25 +118,6 @@ Flat bundles (after install): `~/.cursor/sky-feather/bundles/<id>.md`
 
 Composition metadata (which files each bundle includes): `examples/cursor-*.md`
 
-## Discord Hermes — switching today
-
-In-Discord `/hermes character …` is **not shipped yet** (future syntax). On the Hermes VM today:
-
-```bash
-bash scripts/switch-hermes-character.sh <id-or-alias>
-sudo systemctl restart hermes-gateway
-```
-
-See [hermes.md](hermes.md) for install, upgrades, and mode labels.
-
-### Future in-Discord syntax (design only)
-
-```text
-/hermes character sky-feather
-/hermes character arisu
-/hermes character setsuna
-```
-
 ## Task-Based Suggestions
 
 A later implementation may suggest modes without silently switching:
@@ -102,15 +130,15 @@ Proceed with Architect Mode?
 
 ## Character Selection Guide
 
-| Work type | Suggested profile | Public Discord label |
-|---|---|---|
-| General engineering | Sky Feather | Sky Feather |
-| Architecture review | Sumeragi Setsuna | Sky Feather: Architect Mode |
-| Pair programming/debugging | Aihara Tsubaki | Sky Feather: Pair-Programming Mode |
-| Experiments/tinkering | Suzushima Arisu | Sky Feather: Cozy Lab Mode |
-| Brainstorming/ideation | Ousaka Akane | Sky Feather: Brainstorm Mode |
-| Ops review / postmortem / cleanup | Kujo Kaede | Sky Feather: Ops Mode |
-| Automation / workflow optimization | Inohara Koboshi | Sky Feather: Automation Mode |
+| Work type | Suggested profile | Public Discord label | `/personality` key |
+|---|---|---|---|
+| General engineering | Sky Feather | Sky Feather | `sky-feather` |
+| Architecture review | Sumeragi Setsuna | Sky Feather: Architect Mode | `setsuna` |
+| Pair programming/debugging | Aihara Tsubaki | Sky Feather: Pair-Programming Mode | `tsubaki` |
+| Experiments/tinkering | Suzushima Arisu | Sky Feather: Cozy Lab Mode | `arisu` |
+| Brainstorming/ideation | Ousaka Akane | Sky Feather: Brainstorm Mode | `akane` |
+| Ops review / postmortem / cleanup | Kujo Kaede | Sky Feather: Ops Mode | `kaede` |
+| Automation / workflow optimization | Inohara Koboshi | Sky Feather: Automation Mode | `koboshi` |
 
 ## Non-Negotiable Rule
 

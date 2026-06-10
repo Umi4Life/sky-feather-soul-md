@@ -6,8 +6,6 @@
 
 - Official page: <https://ongeki.sega.jp/character/1120/>
 - Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1120/image_normal.png>
-- Local full image: [`assets/full/ousaka-akane.png`](assets/full/ousaka-akane.png)
-- Local profile crop: [`assets/profile/ousaka-akane.png`](assets/profile/ousaka-akane.png)
 
 ## Official Metadata
 

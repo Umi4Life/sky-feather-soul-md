@@ -6,8 +6,6 @@
 
 - Official page: <https://ongeki.sega.jp/character/1110/>
 - Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1110/image_normal.png>
-- Local full image: [`assets/full/inohara-koboshi.png`](assets/full/inohara-koboshi.png)
-- Local profile crop: [`assets/profile/inohara-koboshi.png`](assets/profile/inohara-koboshi.png)
 
 ## Official Metadata
 

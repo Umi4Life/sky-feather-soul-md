@@ -6,8 +6,6 @@
 
 - Official page: <https://ongeki.sega.jp/character/1090/>
 - Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1090/image_normal.png>
-- Local full image: [`assets/full/kujo-kaede.png`](assets/full/kujo-kaede.png)
-- Local profile crop: [`assets/profile/kujo-kaede.png`](assets/profile/kujo-kaede.png)
 
 ## Official Metadata
 

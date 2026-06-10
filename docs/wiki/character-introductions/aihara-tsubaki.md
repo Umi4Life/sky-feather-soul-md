@@ -6,8 +6,6 @@
 
 - Official page: <https://ongeki.sega.jp/character/1060/>
 - Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1060/image_normal.png>
-- Local full image: [`assets/full/aihara-tsubaki.png`](assets/full/aihara-tsubaki.png)
-- Local profile crop: [`assets/profile/aihara-tsubaki.png`](assets/profile/aihara-tsubaki.png)
 
 ## Official Metadata
 

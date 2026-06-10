@@ -68,3 +68,7 @@ sf_hermes_skills_dir() {
 sf_hermes_backups_dir() {
   printf '%s/backups' "$(sf_hermes_home)"
 }
+
+sf_hermes_config_path() {
+  printf '%s/config.yaml' "$(sf_hermes_home)"
+}

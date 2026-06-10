@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install Sky Feather V3.2 on Hermes Agent (~/.hermes/SOUL.md + skills).
+# Install Sky Feather V3.2 on Hermes Agent (~/.hermes/SOUL.md + skills + personalities).
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -7,6 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/lib/common.sh"
 
 LEGACY=0
+DRY_RUN=0
 REPO_ROOT="$(sf_repo_root)"
 
 while [[ $# -gt 0 ]]; do
@@ -15,16 +16,22 @@ while [[ $# -gt 0 ]]; do
       LEGACY=1
       shift
       ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
     -h|--help)
       cat <<EOF
-Usage: $0 [--legacy] [REPO_ROOT]
+Usage: $0 [--legacy] [--dry-run] [REPO_ROOT]
 
 Install Sky Feather on Hermes Agent.
 
-  Default (V3.2): compose CORE + character into ~/.hermes/SOUL.md, sync skills.
-  --legacy:       copy monolithic SOUL.md only (V1-style drop-in).
+  Default (V3.2 Route B): slim SOUL (CORE + branding), sync skills,
+                          merge agent.personalities into ~/.hermes/config.yaml.
+  --legacy:              copy monolithic SOUL.md only (V1-style drop-in).
+  --dry-run:             preview personality merge only (no config.yaml write).
 
-Existing ~/.hermes/SOUL.md is backed up before overwrite.
+Existing ~/.hermes/SOUL.md and config.yaml are backed up before overwrite.
 
 Environment:
   HERMES_HOME   Hermes instance home (default: ~/.hermes)
@@ -46,7 +53,8 @@ DEFAULT_CHAR="$(sf_json_default_character)"
 echo "Installing Sky Feather on Hermes"
 echo "  Repo:        ${REPO_ROOT}"
 echo "  HERMES_HOME: ${HERMES_HOME}"
-echo "  Mode:        $([[ "${LEGACY}" -eq 1 ]] && echo 'legacy SOUL.md' || echo 'V3.2 CORE + character')"
+echo "  Mode:        $([[ "${LEGACY}" -eq 1 ]] && echo 'legacy SOUL.md' || echo 'V3.2 Route B (slim SOUL + personalities)')"
+[[ "${DRY_RUN}" -eq 1 ]] && echo "  Dry-run:     personality merge preview only"
 
 sf_backup_hermes_soul
 
@@ -82,9 +90,12 @@ if [[ -n "${existing}" ]]; then
   ACTIVE_CHAR="${existing}"
 fi
 
-sf_build_hermes_soul_file "${REPO_ROOT}" "${SOUL_PATH}" "${ACTIVE_CHAR}"
-cp "${SOUL_PATH}" "${MIRROR}/active-soul.md"
-sf_write_hermes_manifest "${MIRROR}" "${ACTIVE_CHAR}"
+if [[ "${DRY_RUN}" -eq 0 ]]; then
+  sf_build_hermes_soul_core_file "${REPO_ROOT}" "${SOUL_PATH}"
+  cp "${SOUL_PATH}" "${MIRROR}/active-soul.md"
+  sf_write_hermes_manifest "${MIRROR}" "${ACTIVE_CHAR}"
+fi
+
 sf_write_hermes_personalities_example "${REPO_ROOT}" "${MIRROR}"
 
 echo ""
@@ -92,9 +103,16 @@ echo "Syncing skills → $(sf_hermes_skills_dir)/"
 sf_sync_hermes_skills "${REPO_ROOT}"
 
 echo ""
-echo "Installed:"
-echo "  ${SOUL_PATH}"
-echo "  ${MIRROR}/"
-echo "  $(sf_hermes_skills_dir)/"
+echo "Installing agent.personalities presets..."
+sf_install_hermes_personalities "${REPO_ROOT}" "${DRY_RUN}"
+
+if [[ "${DRY_RUN}" -eq 0 ]]; then
+  echo ""
+  echo "Installed:"
+  echo "  ${SOUL_PATH}"
+  echo "  $(sf_hermes_config_path)"
+  echo "  ${MIRROR}/"
+  echo "  $(sf_hermes_skills_dir)/"
+fi
 
 sf_print_hermes_next_steps "${ACTIVE_CHAR}"

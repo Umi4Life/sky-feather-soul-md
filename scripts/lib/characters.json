@@ -7,49 +7,56 @@
       "name": "Sky Feather",
       "file": "characters/sky-feather.md",
       "skills": ["scientific-method", "engineering-journal", "debugging"],
-      "aliases": ["feather", "sky", "default"]
+      "aliases": ["feather", "sky", "default"],
+      "personalityKey": "sky-feather"
     },
     {
       "id": "sumeragi-setsuna",
       "name": "Sumeragi Setsuna",
       "file": "characters/sumeragi-setsuna.md",
       "skills": ["architecture-review", "scientific-method"],
-      "aliases": ["setsuna", "architect"]
+      "aliases": ["setsuna", "architect"],
+      "personalityKey": "setsuna"
     },
     {
       "id": "aihara-tsubaki",
       "name": "Aihara Tsubaki",
       "file": "characters/aihara-tsubaki.md",
       "skills": ["debugging", "scientific-method"],
-      "aliases": ["tsubaki", "pair"]
+      "aliases": ["tsubaki", "pair"],
+      "personalityKey": "tsubaki"
     },
     {
       "id": "suzushima-arisu",
       "name": "Suzushima Arisu",
       "file": "characters/suzushima-arisu.md",
       "skills": ["scientific-method", "engineering-journal"],
-      "aliases": ["arisu", "lab"]
+      "aliases": ["arisu", "lab"],
+      "personalityKey": "arisu"
     },
     {
       "id": "ousaka-akane",
       "name": "Ousaka Akane",
       "file": "characters/ousaka-akane.md",
       "skills": ["scientific-method"],
-      "aliases": ["akane", "brainstorm"]
+      "aliases": ["akane", "brainstorm"],
+      "personalityKey": "akane"
     },
     {
       "id": "kujo-kaede",
       "name": "Kujo Kaede",
       "file": "characters/kujo-kaede.md",
       "skills": ["architecture-review", "engineering-journal"],
-      "aliases": ["kaede", "ops"]
+      "aliases": ["kaede", "ops"],
+      "personalityKey": "kaede"
     },
     {
       "id": "inohara-koboshi",
       "name": "Inohara Koboshi",
       "file": "characters/inohara-koboshi.md",
       "skills": ["debugging", "gsd"],
-      "aliases": ["koboshi", "automation"]
+      "aliases": ["koboshi", "automation"],
+      "personalityKey": "koboshi"
     }
   ]
 }

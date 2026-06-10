@@ -6,8 +6,6 @@
 
 - Official page: <https://ongeki.sega.jp/character/1170/>
 - Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1170/image_normal.png>
-- Local full image: [`assets/full/sumeragi-setsuna.png`](assets/full/sumeragi-setsuna.png)
-- Local profile crop: [`assets/profile/sumeragi-setsuna.png`](assets/profile/sumeragi-setsuna.png)
 
 ## Official Metadata
 

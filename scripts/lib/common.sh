@@ -8,10 +8,15 @@ LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${LIB_DIR}/paths.sh"
 
 sf_characters_json() {
-  local global_json
-  global_json="$(sf_sky_feather_mirror)/scripts-lib/characters.json"
-  if [[ -f "${global_json}" ]]; then
-    printf '%s' "${global_json}"
+  local hermes_json cursor_json
+  hermes_json="$(sf_hermes_mirror)/scripts-lib/characters.json"
+  if [[ -f "${hermes_json}" ]]; then
+    printf '%s' "${hermes_json}"
+    return
+  fi
+  cursor_json="$(sf_sky_feather_mirror)/scripts-lib/characters.json"
+  if [[ -f "${cursor_json}" ]]; then
+    printf '%s' "${cursor_json}"
     return
   fi
   printf '%s/lib/characters.json' "$(sf_scripts_dir)"
@@ -158,8 +163,8 @@ _sf_parse_character_field_grep() {
   local json_file value block
   json_file="$(sf_characters_json)"
 
-  # Each entry in characters.json is exactly 6 lines after the id line.
-  block="$(grep -A 5 -F "\"id\": \"${id}\"" "${json_file}" 2>/dev/null || true)"
+  # Each entry in characters.json is exactly 7 lines after the id line.
+  block="$(grep -A 6 -F "\"id\": \"${id}\"" "${json_file}" 2>/dev/null || true)"
   if [[ -z "${block}" ]]; then
     echo "error: character not found: ${id}" >&2
     exit 1
@@ -174,6 +179,9 @@ _sf_parse_character_field_grep() {
       ;;
     skills)
       value="$(grep -F '"skills":' <<< "${block}" | sed -n 's/^[[:space:]]*"skills": \[\([^]]*\)\].*/\1/p' | head -n 1 | tr -d '"' | tr -d ' ')"
+      ;;
+    personalityKey)
+      value="$(grep -F '"personalityKey":' <<< "${block}" | sed -n 's/^[[:space:]]*"personalityKey": "\([^"]*\)".*/\1/p' | head -n 1)"
       ;;
     *)
       echo "error: unsupported field without jq: ${field}" >&2
@@ -256,6 +264,21 @@ sf_list_character_skills() {
   for skill in "${_skills[@]}"; do
     [[ -n "${skill}" ]] && printf '%s\n' "${skill}"
   done
+}
+
+sf_get_character_personality_key() {
+  local char_id="$1"
+  local key
+  key="$(sf_get_character_field "${char_id}" personalityKey)"
+  if [[ -z "${key}" ]]; then
+    echo "error: missing personalityKey for character: ${char_id}" >&2
+    exit 1
+  fi
+  printf '%s' "${key}"
+}
+
+sf_hermes_templates_dir() {
+  printf '%s/templates' "$(sf_scripts_dir)"
 }
 
 sf_build_bundle_file() {
@@ -422,6 +445,231 @@ sf_backup_hermes_soul() {
   echo "Backed up existing SOUL.md → ${backup_path}"
 }
 
+sf_backup_hermes_config() {
+  local config_path backup_dir stamp backup_path
+  config_path="$(sf_hermes_config_path)"
+  backup_dir="$(sf_hermes_backups_dir)"
+
+  if [[ ! -f "${config_path}" ]]; then
+    return 0
+  fi
+
+  mkdir -p "${backup_dir}"
+  stamp="$(date -u +"%Y%m%dT%H%M%SZ")"
+  backup_path="${backup_dir}/config.yaml.${stamp}"
+  cp "${config_path}" "${backup_path}"
+  echo "Backed up existing config.yaml → ${backup_path}"
+}
+
+sf_warn_hermes_content_size() {
+  local label="$1"
+  local path="$2"
+  local size max
+  size="$(wc -c < "${path}" | tr -d ' ')"
+  max="$(sf_hermes_soul_max_chars)"
+  if [[ "${size}" -gt "${max}" ]]; then
+    echo "warning: ${label} is ${size} bytes (Hermes may truncate at ~${max})" >&2
+  fi
+}
+
+sf_render_hermes_preamble() {
+  local char_id="$1"
+  local name label template
+  name="$(sf_get_character_field "${char_id}" name)"
+  label="$(sf_hermes_discord_label "${char_id}")"
+  template="$(sf_hermes_templates_dir)/hermes-personality-preamble.md"
+  if [[ ! -f "${template}" ]]; then
+    echo "error: missing template ${template}" >&2
+    exit 1
+  fi
+  sed \
+    -e "s/{{DISCORD_LABEL}}/${label}/g" \
+    -e "s/{{CHARACTER_NAME}}/${name}/g" \
+    "${template}"
+}
+
+# Hermes install identity: CORE + Discord branding only (modes via /personality).
+sf_build_hermes_soul_core_file() {
+  local repo_root="$1"
+  local output_path="$2"
+  local branding_template
+
+  branding_template="$(sf_hermes_templates_dir)/hermes-soul-branding.md"
+  if [[ ! -f "${branding_template}" ]]; then
+    echo "error: missing template ${branding_template}" >&2
+    exit 1
+  fi
+
+  mkdir -p "$(dirname "${output_path}")"
+
+  {
+    echo "# Sky Feather V3 — Hermes Identity"
+    echo ""
+    echo "Public Discord label: $(sf_hermes_discord_label sky-feather)"
+    echo ""
+    echo "---"
+    echo ""
+    echo "# CORE (do not weaken)"
+    echo ""
+    cat "${repo_root}/CORE.md"
+    echo ""
+    echo "---"
+    echo ""
+    cat "${branding_template}"
+    echo ""
+    echo "---"
+    echo ""
+    echo "# Skills"
+    echo ""
+    echo "Workflow skills are installed under \`~/.hermes/skills/\`."
+    echo "Load them when the task matches (scientific-method, engineering-journal, debugging, etc.)."
+    echo "Delivery modes: use \`/personality <preset>\` in Discord (sky-feather, setsuna, tsubaki, arisu, akane, kaede, koboshi)."
+  } > "${output_path}"
+
+  sf_warn_hermes_content_size "composed SOUL.md" "${output_path}"
+}
+
+# Personality preset body (character voice only; CORE stays in SOUL.md).
+sf_build_hermes_personality_preset() {
+  local repo_root="$1"
+  local char_id="$2"
+  local file char_path
+
+  file="$(sf_get_character_field "${char_id}" file)"
+  char_path="${repo_root}/${file}"
+  if [[ ! -f "${char_path}" ]]; then
+    echo "error: missing character file ${char_path}" >&2
+    exit 1
+  fi
+
+  sf_render_hermes_preamble "${char_id}"
+  echo ""
+  cat "${char_path}"
+}
+
+sf_personalities_marker_start() {
+  printf '%s' '# --- sky-feather:personalities:start (generated; do not edit) ---'
+}
+
+sf_personalities_marker_end() {
+  printf '%s' '# --- sky-feather:personalities:end ---'
+}
+
+_sf_indent_yaml_literal_body() {
+  sed 's/^/      /'
+}
+
+sf_generate_hermes_personalities_yaml() {
+  local repo_root="$1"
+  local output_path="$2"
+  local char_id preset_key preset_tmp size max
+
+  mkdir -p "$(dirname "${output_path}")"
+  preset_tmp="$(mktemp)"
+
+  {
+    sf_personalities_marker_start
+    echo "agent:"
+    echo "  personalities:"
+  } > "${output_path}"
+
+  while IFS= read -r char_id; do
+    preset_key="$(sf_get_character_personality_key "${char_id}")"
+    sf_build_hermes_personality_preset "${repo_root}" "${char_id}" > "${preset_tmp}"
+    size="$(wc -c < "${preset_tmp}" | tr -d ' ')"
+    max="$(sf_hermes_soul_max_chars)"
+    if [[ "${size}" -gt "${max}" ]]; then
+      echo "warning: personality preset '${preset_key}' is ${size} bytes (may truncate at ~${max})" >&2
+    fi
+    {
+      echo "    ${preset_key}: |"
+      _sf_indent_yaml_literal_body < "${preset_tmp}"
+    } >> "${output_path}"
+  done < <(sf_list_character_ids)
+
+  echo "$(sf_personalities_marker_end)" >> "${output_path}"
+  rm -f "${preset_tmp}"
+}
+
+sf_merge_hermes_personalities() {
+  local repo_root="$1"
+  local dry_run="${2:-0}"
+  local generated config_path mirror_dir block_tmp py
+
+  mirror_dir="$(sf_hermes_mirror)"
+  generated="${mirror_dir}/personalities.generated.yaml"
+  config_path="$(sf_hermes_config_path)"
+  block_tmp="$(mktemp)"
+
+  sf_generate_hermes_personalities_yaml "${repo_root}" "${generated}"
+  cp "${generated}" "${block_tmp}"
+
+  if [[ "${dry_run}" -eq 1 ]]; then
+    echo "Dry-run: would merge personalities into ${config_path}"
+    echo "Generated block ($(sf_hermes_mirror)/personalities.generated.yaml):"
+    cat "${block_tmp}"
+    rm -f "${block_tmp}"
+    return 0
+  fi
+
+  for py in python3 python; do
+    command -v "${py}" >/dev/null 2>&1 || continue
+    "${py}" - "${config_path}" "${block_tmp}" <<'PY'
+import sys
+
+config_path, block_path = sys.argv[1], sys.argv[2]
+with open(block_path, encoding="utf-8") as f:
+    new_block = f.read().rstrip() + "\n"
+
+start = "# --- sky-feather:personalities:start (generated; do not edit) ---"
+end = "# --- sky-feather:personalities:end ---"
+
+try:
+    with open(config_path, encoding="utf-8") as f:
+        existing = f.read()
+except OSError:
+    existing = ""
+
+if start in existing and end in existing:
+    before, rest = existing.split(start, 1)
+    _, after = rest.split(end, 1)
+    merged = before.rstrip() + "\n\n" + new_block.rstrip() + "\n" + after.lstrip("\n")
+elif not existing.strip():
+    merged = new_block
+else:
+  warning = (
+      "# WARNING: sky-feather personalities appended — review for duplicate agent: keys\n"
+  )
+  merged = existing.rstrip() + "\n\n" + warning + new_block
+
+with open(config_path, "w", encoding="utf-8", newline="\n") as f:
+    f.write(merged)
+PY
+    rm -f "${block_tmp}"
+    return 0
+  done
+
+  rm -f "${block_tmp}"
+  echo "error: python3 required to merge config.yaml personalities" >&2
+  exit 1
+}
+
+sf_install_hermes_personalities() {
+  local repo_root="$1"
+  local dry_run="${2:-0}"
+
+  if [[ "${dry_run}" -eq 0 ]]; then
+    sf_backup_hermes_config
+  fi
+
+  sf_merge_hermes_personalities "${repo_root}" "${dry_run}"
+
+  if [[ "${dry_run}" -eq 0 ]]; then
+    echo "Merged agent.personalities → $(sf_hermes_config_path)"
+    echo "Debug copy: $(sf_hermes_mirror)/personalities.generated.yaml"
+  fi
+}
+
 # Hermes identity: CORE + character only (skills live under ~/.hermes/skills/).
 sf_build_hermes_soul_file() {
   local repo_root="$1"
@@ -504,50 +752,57 @@ sf_write_hermes_personalities_example() {
   local repo_root="$1"
   local mirror_dir="$2"
   local out="${mirror_dir}/personalities.example.yaml"
-  local char_id name label
+  local char_id preset_key label
 
   {
-    echo "# Merge into ~/.hermes/config.yaml under agent.personalities as needed."
-    echo "# Switch at runtime with: /personality <preset>"
+    echo "# Reference only — install writes ~/.hermes/config.yaml automatically."
+    echo "# Switch at runtime with: /personality <preset-key>"
+    echo "# Full generated block: ~/.hermes/sky-feather/personalities.generated.yaml"
     echo "#"
-    echo "# Public Discord labels — keep Sky Feather branding; do not casually swap identity."
-    echo "agent:"
-    echo "  personalities:"
+    echo "# Preset keys (short aliases):"
   } > "${out}"
 
   while IFS= read -r char_id; do
-    name="$(sf_get_character_field "${char_id}" name)"
+    preset_key="$(sf_get_character_personality_key "${char_id}")"
     label="$(sf_hermes_discord_label "${char_id}")"
-    {
-      echo "    ${char_id}: |"
-      echo "      Public label: ${label}"
-      echo "      Use CORE doctrine from ~/.hermes/SOUL.md with ${name} delivery style."
-      echo "      (Regenerate full preset text with: ./scripts/switch-hermes-character.sh ${char_id} --preset-only)"
-    } >> "${out}"
+    echo "#   ${preset_key} → ${label}" >> "${out}"
   done < <(sf_list_character_ids)
+
+  echo "#" >> "${out}"
+  echo "# Regenerate preset body: bash scripts/switch-hermes-character.sh <alias> --preset-only" >> "${out}"
 }
 
 sf_print_hermes_next_steps() {
   local active_char="${1:-sky-feather}"
   cat <<EOF
 
-Hermes V3.2 installed.
+Hermes V3.2 (Route B) installed.
 
-  Identity:  $(sf_hermes_soul_path)
+  Identity:  $(sf_hermes_soul_path)  (CORE + branding; slim SOUL)
+  Config:    $(sf_hermes_config_path)  (agent.personalities presets)
   Mirror:    $(sf_hermes_mirror)/
   Skills:    $(sf_hermes_skills_dir)/
-  Active:    ${active_char} ($(sf_hermes_discord_label "${active_char}"))
+  Manifest:  ${active_char} ($(sf_hermes_discord_label "${active_char}"))
+
+Discord mode switch (primary):
+  /personality sky-feather
+  /personality setsuna
+  /personality tsubaki
+  /personality arisu
+  /personality akane
+  /personality kaede
+  /personality koboshi
 
 Next steps:
-  1. Restart Hermes (service or gateway) so SOUL.md reloads
-  2. Test in Discord — same engineering standards, Sky Feather voice
-  3. Optional: merge $(sf_hermes_mirror)/personalities.example.yaml into ~/.hermes/config.yaml
-  4. Switch character: ./scripts/switch-hermes-character.sh <id-or-alias>
+  1. Restart Hermes (service or gateway) once so SOUL.md reloads
+  2. In Discord: /personality sky-feather (default) or another preset above
+  3. Personality changes do not require gateway restart
+  4. Legacy server-wide SOUL switch: bash scripts/switch-hermes-character.sh <alias>
 
 Future upgrades (after git pull in this repo):
-  ./scripts/install-hermes-global.sh
+  bash scripts/install-hermes-global.sh
 
-Legacy monolithic SOUL.md backups live in $(sf_hermes_backups_dir)/ if any existed.
+Backups: $(sf_hermes_backups_dir)/ (SOUL.md and config.yaml if any existed)
 EOF
 }
 

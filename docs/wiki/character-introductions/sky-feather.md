@@ -6,8 +6,6 @@
 
 - Official page: <https://chunithm.sega.jp/character/#/chunithm/%E3%82%B9%E3%82%AB%E3%82%A4%E3%83%95%E3%82%A7%E3%82%B6%E3%83%BC>
 - Full image source: <https://chunithm.sega.jp/storage/chara/chunithm/illustration/cs11.webp?_=20251210.153647>
-- Local full image: [`assets/full/sky-feather.webp`](assets/full/sky-feather.webp)
-- Local profile crop: [`assets/profile/sky-feather.png`](assets/profile/sky-feather.png)
 
 ## Official Metadata
 

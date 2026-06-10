@@ -6,8 +6,6 @@
 
 - Official page: <https://ongeki.sega.jp/character/1130/>
 - Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1130/image_normal.png>
-- Local full image: [`assets/full/suzushima-arisu.png`](assets/full/suzushima-arisu.png)
-- Local profile crop: [`assets/profile/suzushima-arisu.png`](assets/profile/suzushima-arisu.png)
 
 ## Official Metadata
 
