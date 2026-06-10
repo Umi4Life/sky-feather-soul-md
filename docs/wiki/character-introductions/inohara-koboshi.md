@@ -5,7 +5,7 @@
 ## Source
 
 - Official page: <https://ongeki.sega.jp/character/1110/>
-- Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1110/image_normal.png>
+- Full image source: <https://ongeki.sega.jp/assets/img/pages/character/1090/image_normal.png>
 
 ## Official Metadata
 
