@@ -2,6 +2,9 @@
 
 > **Evidence-first engineering doctrine with selectable character profiles.** `CORE.md` defines the scientific-method operating standard; `characters/` defines presentation; `skills/` defines task workflows.
 
+##
+Made mainly for Discord -> Hermes integration, but can be installed on other AI tools such as Copilot, Claude and Cursor with some elbow grease.
+
 ## What changed in V3
 
 The project now separates durable engineering behavior from character voice:
