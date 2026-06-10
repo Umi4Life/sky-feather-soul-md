@@ -91,15 +91,52 @@ sf_json_manifest_active() {
   fi
 }
 
-# Fallback when jq is unavailable (e.g. minimal Hermes VM without apt extras).
-_sf_get_character_field_no_jq() {
+# Parse characters.json without jq (minimal Hermes VM).
+_sf_parse_character_field_grep() {
   local id="$1"
   local field="$2"
-  local json_file
+  local json_file value block
   json_file="$(sf_characters_json)"
 
-  if command -v python3 >/dev/null 2>&1; then
-    python3 - "${id}" "${field}" "${json_file}" <<'PY'
+  # Each entry in characters.json is exactly 6 lines after the id line.
+  block="$(grep -A 5 -F "\"id\": \"${id}\"" "${json_file}" 2>/dev/null || true)"
+  if [[ -z "${block}" ]]; then
+    echo "error: character not found: ${id}" >&2
+    exit 1
+  fi
+
+  case "${field}" in
+    name)
+      value="$(grep -F '"name":' <<< "${block}" | sed -n 's/^[[:space:]]*"name": "\([^"]*\)".*/\1/p' | head -n 1)"
+      ;;
+    file)
+      value="$(grep -F '"file":' <<< "${block}" | sed -n 's/^[[:space:]]*"file": "\([^"]*\)".*/\1/p' | head -n 1)"
+      ;;
+    skills)
+      value="$(grep -F '"skills":' <<< "${block}" | sed -n 's/^[[:space:]]*"skills": \[\([^]]*\)\].*/\1/p' | head -n 1 | tr -d '"' | tr -d ' ')"
+      ;;
+    *)
+      echo "error: unsupported field without jq: ${field}" >&2
+      exit 1
+      ;;
+  esac
+
+  if [[ -z "${value}" ]]; then
+    echo "error: character not found or missing field ${field}: ${id}" >&2
+    exit 1
+  fi
+  printf '%s' "${value}"
+}
+
+_sf_parse_character_field_python() {
+  local id="$1"
+  local field="$2"
+  local json_file py
+  json_file="$(sf_characters_json)"
+
+  for py in python3 python; do
+    command -v "${py}" >/dev/null 2>&1 || continue
+    "${py}" - "${id}" "${field}" "${json_file}" <<'PY'
 import json, sys
 char_id, field, path = sys.argv[1], sys.argv[2], sys.argv[3]
 with open(path, encoding="utf-8") as f:
@@ -111,54 +148,43 @@ for c in data.get("characters", []):
             print(",".join(v))
         elif v is not None:
             print(v)
-        break
+        sys.exit(0)
+sys.exit(1)
 PY
-    return 0
-  fi
-
-  local block
-  block="$(sed -n "/\"id\": \"${id}\"/,/\"id\": \"/p" "${json_file}" | sed '$d')"
-  if [[ -z "${block}" ]]; then
-    block="$(sed -n "/\"id\": \"${id}\"/,/^  \}/p" "${json_file}")"
-  fi
-  if [[ -z "${block}" ]]; then
-    echo "error: character not found: ${id}" >&2
-    exit 1
-  fi
-  case "${field}" in
-    name)
-      grep '"name":' <<< "${block}" | sed 's/.*"name": "\([^"]*\)".*/\1/' | head -n 1
-      ;;
-    file)
-      grep '"file":' <<< "${block}" | sed 's/.*"file": "\([^"]*\)".*/\1/' | head -n 1
-      ;;
-    skills)
-      grep '"skills":' <<< "${block}" | sed 's/.*"skills": \[\([^]]*\)\].*/\1/' | tr -d '"' | tr -d ' '
-      ;;
-    *)
-      echo "error: unsupported field without jq: ${field}" >&2
-      exit 1
-      ;;
-  esac
+    return $?
+  done
+  return 1
 }
 
 sf_get_character_field() {
   local id="$1"
   local field="$2"
-  local json value
-  json="$(sf_read_characters_config)"
+  local value=""
+
   if command -v jq >/dev/null 2>&1; then
-    printf '%s' "${json}" | jq -r --arg id "${id}" --arg f "${field}" '
-      .characters[] | select(.id == $id) | .[$f]
-    '
-    return 0
+    if [[ "${field}" == "skills" ]]; then
+      value="$(jq -r --arg id "${id}" '
+        .characters[] | select(.id == $id) | .skills | join(",")
+      ' "$(sf_characters_json)" 2>/dev/null || true)"
+    else
+      value="$(jq -r --arg id "${id}" --arg f "${field}" '
+        .characters[] | select(.id == $id) | .[$f] // empty
+      ' "$(sf_characters_json)" 2>/dev/null || true)"
+    fi
+    if [[ -n "${value}" && "${value}" != "null" ]]; then
+      printf '%s' "${value}"
+      return 0
+    fi
   fi
 
-  value="$(_sf_get_character_field_no_jq "${id}" "${field}")"
-  if [[ -z "${value}" ]]; then
-    echo "error: character not found or missing field ${field}: ${id}" >&2
-    exit 1
+  if value="$(_sf_parse_character_field_python "${id}" "${field}")"; then
+    if [[ -n "${value}" ]]; then
+      printf '%s' "${value}"
+      return 0
+    fi
   fi
+
+  value="$(_sf_parse_character_field_grep "${id}" "${field}")"
   printf '%s' "${value}"
 }
 
@@ -166,10 +192,6 @@ sf_list_character_skills() {
   local char_id="$1"
   local skills_csv skill
   skills_csv="$(sf_get_character_field "${char_id}" skills)"
-  if command -v jq >/dev/null 2>&1; then
-    printf '%s' "${skills_csv}" | jq -r '.[]'
-    return 0
-  fi
   IFS=',' read -ra _skills <<< "${skills_csv}"
   for skill in "${_skills[@]}"; do
     [[ -n "${skill}" ]] && printf '%s\n' "${skill}"
