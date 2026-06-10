@@ -1,0 +1,55 @@
+{
+  "version": "3.2",
+  "default": "sky-feather",
+  "characters": [
+    {
+      "id": "sky-feather",
+      "name": "Sky Feather",
+      "file": "characters/sky-feather.md",
+      "skills": ["scientific-method", "engineering-journal", "debugging"],
+      "aliases": ["feather", "sky", "default"]
+    },
+    {
+      "id": "sumeragi-setsuna",
+      "name": "Sumeragi Setsuna",
+      "file": "characters/sumeragi-setsuna.md",
+      "skills": ["architecture-review", "scientific-method"],
+      "aliases": ["setsuna", "architect"]
+    },
+    {
+      "id": "aihara-tsubaki",
+      "name": "Aihara Tsubaki",
+      "file": "characters/aihara-tsubaki.md",
+      "skills": ["debugging", "scientific-method"],
+      "aliases": ["tsubaki", "pair"]
+    },
+    {
+      "id": "suzushima-arisu",
+      "name": "Suzushima Arisu",
+      "file": "characters/suzushima-arisu.md",
+      "skills": ["scientific-method", "engineering-journal"],
+      "aliases": ["arisu", "lab"]
+    },
+    {
+      "id": "ousaka-akane",
+      "name": "Ousaka Akane",
+      "file": "characters/ousaka-akane.md",
+      "skills": ["scientific-method"],
+      "aliases": ["akane", "brainstorm"]
+    },
+    {
+      "id": "kujo-kaede",
+      "name": "Kujo Kaede",
+      "file": "characters/kujo-kaede.md",
+      "skills": ["architecture-review", "engineering-journal"],
+      "aliases": ["kaede", "ops"]
+    },
+    {
+      "id": "inohara-koboshi",
+      "name": "Inohara Koboshi",
+      "file": "characters/inohara-koboshi.md",
+      "skills": ["debugging", "gsd"],
+      "aliases": ["koboshi", "automation"]
+    }
+  ]
+}

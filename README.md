@@ -84,7 +84,11 @@ Outcomes you should expect:
 | [docs/character-switching.md](docs/character-switching.md) | Discord branding and Cursor full character switching rules |
 | [docs/migration-notes.md](docs/migration-notes.md) | V3 migration notes from single SOUL.md |
 | [docs/wiki/character-introductions/](docs/wiki/character-introductions/) | Official-source character introduction wiki and profile crops |
-| [scripts/install-cursor-local.sh](scripts/install-cursor-local.sh) | Mirror materials into `~/.cursor/sky-feather/` |
+| [docs/cursor-quickstart.md](docs/cursor-quickstart.md) | One-page Cursor install / switch / update cheat sheet |
+| [scripts/install-cursor-global.sh](scripts/install-cursor-global.sh) | Global Cursor install (macOS / Linux / Git Bash) |
+| [scripts/install-cursor-global.ps1](scripts/install-cursor-global.ps1) | Global Cursor install (Windows PowerShell) |
+| [scripts/switch-character.sh](scripts/switch-character.sh) | Switch active global character profile |
+| [scripts/uninstall-cursor-global.sh](scripts/uninstall-cursor-global.sh) | Uninstall / prune global Cursor artifacts |
 
 ---
 
@@ -141,10 +145,10 @@ See [examples/discord-hermes-sky-feather.md](examples/discord-hermes-sky-feather
 ## Use in Cursor
 
 1. Clone this repo somewhere on your machine.
-2. Follow [docs/cursor.md](docs/cursor.md).
-3. Choose a composition file from [examples/](examples/), such as [examples/cursor-sky-feather.md](examples/cursor-sky-feather.md) or [examples/cursor-sumeragi-setsuna.md](examples/cursor-sumeragi-setsuna.md).
-4. Start a new chat and ask a technical question.
-5. Verify that the engineering conclusion remains evidence-first while the delivery style matches the selected character.
+2. Run the global installer: [docs/cursor-quickstart.md](docs/cursor-quickstart.md).
+3. Paste the one-time User Rules stub (see [docs/cursor.md](docs/cursor.md)).
+4. Switch characters with `switch-character` — full guide in [docs/cursor.md](docs/cursor.md).
+5. Start a new chat and verify evidence-first engineering with character-appropriate delivery.
 
 Other agents: [GitHub Copilot](docs/github-copilot.md) · [Claude Code](docs/claude-code.md) · [Other agents](docs/other-agents.md)
 

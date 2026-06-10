@@ -1,5 +1,12 @@
 # Cursor Composition — Sky Feather
 
+> **Composition metadata** — documents which repo files are bundled for this character.
+> Do not paste into Cursor User Rules. After `install-cursor-global`, the flat bundle
+> lives at `~/.cursor/sky-feather/bundles/sky-feather.md`. Switch with `switch-character sky-feather`.
+> See [docs/cursor.md](../docs/cursor.md).
+
+**Character ID:** `sky-feather`
+
 ## Load Order
 
 ```text

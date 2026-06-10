@@ -1,0 +1,19 @@
+{
+  "version": "3.2",
+  "relativeToHermesHome": true,
+  "mirrorDir": "sky-feather",
+  "soulFile": "SOUL.md",
+  "skillsDir": "skills",
+  "backupsDir": "backups",
+  "defaultCharacter": "sky-feather",
+  "soulMaxChars": 20000,
+  "discordLabels": {
+    "sky-feather": "Sky Feather",
+    "sumeragi-setsuna": "Sky Feather: Architect Mode",
+    "aihara-tsubaki": "Sky Feather: Pair-Programming Mode",
+    "suzushima-arisu": "Sky Feather: Cozy Lab Mode",
+    "ousaka-akane": "Sky Feather: Brainstorm Mode",
+    "kujo-kaede": "Sky Feather: Ops Mode",
+    "inohara-koboshi": "Sky Feather: Automation Mode"
+  }
+}

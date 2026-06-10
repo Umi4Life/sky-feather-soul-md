@@ -1,5 +1,9 @@
 # Cursor Composition — Ousaka Akane
 
+> **Composition metadata** — do not paste into User Rules. Flat bundle: `~/.cursor/sky-feather/bundles/ousaka-akane.md`. Switch: `switch-character ousaka-akane`. See [docs/cursor.md](../docs/cursor.md).
+
+**Character ID:** `ousaka-akane`
+
 ## Load Order
 
 ```text

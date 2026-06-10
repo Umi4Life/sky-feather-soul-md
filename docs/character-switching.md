@@ -39,23 +39,39 @@ Sky Feather: Automation Mode
 
 ## Cursor Full Character Switching
 
-Cursor can load full profiles directly.
+Cursor loads full profiles via the global V3.2 install. See [cursor.md](cursor.md) and [cursor-quickstart.md](cursor-quickstart.md).
 
-Examples:
+### Switch command
 
-```text
-CORE.md + characters/sky-feather.md + skills/debugging/SKILL.md
-CORE.md + characters/sumeragi-setsuna.md + skills/architecture-review/SKILL.md
-CORE.md + characters/aihara-tsubaki.md + skills/debugging/SKILL.md
-CORE.md + characters/suzushima-arisu.md + skills/scientific-method/SKILL.md
-CORE.md + characters/ousaka-akane.md
-CORE.md + characters/kujo-kaede.md + skills/architecture-review/SKILL.md
-CORE.md + characters/inohara-koboshi.md + skills/debugging/SKILL.md
+```bash
+# macOS / Linux / Git Bash
+./scripts/switch-character.sh <character-id-or-alias>
 ```
 
-## Suggested Commands
+```powershell
+# Windows PowerShell
+.\scripts\switch-character.ps1 <character-id-or-alias>
+```
 
-Initial explicit switching syntax:
+Start a **new chat** after switching.
+
+### Character IDs
+
+| ID | Aliases |
+|----|---------|
+| `sky-feather` | feather, sky, default |
+| `sumeragi-setsuna` | setsuna, architect |
+| `aihara-tsubaki` | tsubaki, pair |
+| `suzushima-arisu` | arisu, lab |
+| `ousaka-akane` | akane, brainstorm |
+| `kujo-kaede` | kaede, ops |
+| `inohara-koboshi` | koboshi, automation |
+
+Flat bundles (after install): `~/.cursor/sky-feather/bundles/<id>.md`
+
+Composition metadata (which files each bundle includes): `examples/cursor-*.md`
+
+## Suggested Commands (Discord Hermes)
 
 ```text
 /hermes character sky-feather
@@ -65,18 +81,6 @@ Initial explicit switching syntax:
 /hermes character akane
 /hermes character kaede
 /hermes character koboshi
-```
-
-For Cursor, use explicit composition files:
-
-```text
-examples/cursor-sky-feather.md
-examples/cursor-suzushima-arisu.md
-examples/cursor-sumeragi-setsuna.md
-examples/cursor-aihara-tsubaki.md
-examples/cursor-ousaka-akane.md
-examples/cursor-kaede.md
-examples/cursor-koboshi.md
 ```
 
 ## Task-Based Suggestions

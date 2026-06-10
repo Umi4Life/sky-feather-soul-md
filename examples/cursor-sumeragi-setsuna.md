@@ -1,5 +1,9 @@
 # Cursor Composition — Sumeragi Setsuna
 
+> **Composition metadata** — do not paste into User Rules. Flat bundle: `~/.cursor/sky-feather/bundles/sumeragi-setsuna.md`. Switch: `switch-character sumeragi-setsuna`. See [docs/cursor.md](../docs/cursor.md).
+
+**Character ID:** `sumeragi-setsuna`
+
 ## Load Order
 
 ```text

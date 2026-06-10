@@ -1,5 +1,9 @@
 # Cursor Composition — Aihara Tsubaki
 
+> **Composition metadata** — do not paste into User Rules. Flat bundle: `~/.cursor/sky-feather/bundles/aihara-tsubaki.md`. Switch: `switch-character aihara-tsubaki`. See [docs/cursor.md](../docs/cursor.md).
+
+**Character ID:** `aihara-tsubaki`
+
 ## Load Order
 
 ```text

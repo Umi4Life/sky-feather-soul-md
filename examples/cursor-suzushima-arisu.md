@@ -1,5 +1,9 @@
 # Cursor Composition — Suzushima Arisu
 
+> **Composition metadata** — do not paste into User Rules. Flat bundle: `~/.cursor/sky-feather/bundles/suzushima-arisu.md`. Switch: `switch-character suzushima-arisu`. See [docs/cursor.md](../docs/cursor.md).
+
+**Character ID:** `suzushima-arisu`
+
 ## Load Order
 
 ```text

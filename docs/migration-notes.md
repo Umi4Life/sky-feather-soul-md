@@ -131,6 +131,45 @@ examples/cursor-koboshi.md
 
 No architectural changes. Utility profiles fill ops/maintenance and automation/DX niches.
 
+### Phase 9 — Cursor Global Lifecycle (V3.2)
+
+**Removed:**
+
+```text
+scripts/install-cursor-local.sh
+```
+
+**Added:**
+
+```text
+scripts/install-cursor-global.{sh,ps1,cmd}
+scripts/switch-character.{sh,ps1,cmd}
+scripts/uninstall-cursor-global.{sh,ps1,cmd}
+scripts/build-bundles.{sh,ps1}
+scripts/lib/characters.json
+scripts/lib/cursor-paths.json
+docs/cursor-quickstart.md
+```
+
+**Path changes:**
+
+| Before (V1 / early V3) | After (V3.2) |
+|------------------------|--------------|
+| `~/.cursor/skills/sky-feather-soul/` | `~/.cursor/skills/sky-feather-character/` |
+| Paste full SOUL.md into User Rules | Thin User Rules stub (once) |
+| `examples/cursor-*.md` as paste targets | Composition **metadata** only |
+| Manual character switch | `switch-character` script + new chat |
+
+**True flat compositions** live at `~/.cursor/sky-feather/bundles/*.md` after running `install-cursor-global`.
+
+**Migration steps for existing users:**
+
+1. Run `install-cursor-global` for your OS (see [cursor.md](cursor.md))
+2. Replace User Rules: remove full `SOUL.md` block; paste thin stub from install output
+3. Legacy `sky-feather-soul` skill is removed automatically on install
+4. Use `switch-character <id>` instead of swapping composition files
+5. Optional cleanup: `uninstall-cursor-global --dry-run` then `--legacy` if duplicates remain
+
 ## Migration Risk
 
 The main risk is accidentally moving engineering doctrine into a character profile, which would make standards vary by character.

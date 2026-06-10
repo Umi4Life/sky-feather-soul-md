@@ -1,0 +1,13 @@
+{
+  "version": "3.2",
+  "relativeToCursorHome": true,
+  "legacy": {
+    "skillDirs": ["skills/sky-feather-soul"],
+    "files": ["sky-feather/sky-feather-soul.mdc"]
+  },
+  "v3": {
+    "mirrorDir": "sky-feather",
+    "skillDirs": ["skills/sky-feather-character"],
+    "files": ["commands/character.md"]
+  }
+}

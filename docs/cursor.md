@@ -1,64 +1,235 @@
-# Install Sky Feather / V3 Character Profiles on Cursor
+# Sky Feather on Cursor — Install, Update, Uninstall
 
-Use **global** configuration so team repositories stay clean.
+Global V3.2 setup for character profiles in Cursor. Quick reference: [cursor-quickstart.md](cursor-quickstart.md).
 
-## Recommended: User Rules
+## Table of contents
 
-For the default Sky Feather experience, paste this composition into **Cursor Settings → Rules → User Rules**:
+1. [Overview](#overview)
+2. [Prerequisites](#prerequisites)
+3. [Install (first time)](#install-first-time)
+4. [One-time User Rules](#one-time-user-rules)
+5. [Switch character](#switch-character)
+6. [Update](#update)
+7. [Uninstall](#uninstall)
+8. [Verify](#verify)
+9. [Troubleshooting](#troubleshooting)
+10. [Do not use in team repos](#do-not-use-in-team-repos)
+11. [Legacy / migration](#legacy--migration)
 
-```text
-Read and follow the repository-local files in this order:
+---
 
-1. CORE.md
-2. characters/sky-feather.md
-3. skills/scientific-method/SKILL.md
-4. skills/engineering-journal/SKILL.md
-5. relevant task-specific skills under skills/
-```
+## Overview
 
-Then paste or reference the actual contents from this repo.
+Sky Feather V3.2 installs **one global injection point** for personality:
 
-If you want a full character switch, use one of the flat composition examples:
+| What | Where | Managed by |
+|------|-------|------------|
+| Flat character bundles | `~/.cursor/sky-feather/bundles/*.md` | install script |
+| Active profile (inlined) | `~/.cursor/skills/sky-feather-character/SKILL.md` | install / switch scripts |
+| Thin activation stub | Cursor **User Rules** (manual, once) | you |
+| Mid-chat switch helper | `~/.cursor/commands/character.md` | install script |
 
-- [examples/cursor-sky-feather.md](../examples/cursor-sky-feather.md)
-- [examples/cursor-suzushima-arisu.md](../examples/cursor-suzushima-arisu.md)
-- [examples/cursor-sumeragi-setsuna.md](../examples/cursor-sumeragi-setsuna.md)
-- [examples/cursor-aihara-tsubaki.md](../examples/cursor-aihara-tsubaki.md)
-- [examples/cursor-ousaka-akane.md](../examples/cursor-ousaka-akane.md)
-- [examples/cursor-kaede.md](../examples/cursor-kaede.md)
-- [examples/cursor-koboshi.md](../examples/cursor-koboshi.md)
+Character switching changes **delivery style**, not engineering standards (`CORE.md` is inlined in every bundle).
 
-## Compatibility: old SOUL.md path
+---
 
-`SOUL.md` remains available as the historical single-file Sky Feather reference.
+## Prerequisites
 
-If you want the old behavior, paste [SOUL.md](../SOUL.md) into User Rules or use the existing legacy activation block from [examples/cursor/sky-feather-soul.mdc](../examples/cursor/sky-feather-soul.mdc).
+- Git clone of this repository
+- Shell for your OS:
+  - **macOS / Linux:** bash or zsh
+  - **Windows:** PowerShell 5.1+ or PowerShell 7+ (recommended), or Git Bash, or cmd via `.cmd` wrappers
+- Optional on Unix: `jq` (bash scripts fall back with reduced alias support; PowerShell has native JSON)
 
-## Optional: local mirror + install script
+---
 
-After cloning this repo:
+## Install (first time)
+
+Clone the repo, then run the installer for your platform:
+
+| Platform | Command |
+|----------|---------|
+| macOS | `./scripts/install-cursor-global.sh` |
+| Linux | `./scripts/install-cursor-global.sh` |
+| Windows PowerShell | `.\scripts\install-cursor-global.ps1` |
+| Windows cmd | `scripts\install-cursor-global.cmd` |
+| Windows Git Bash | `./scripts/install-cursor-global.sh` |
+
+Optional: pass a repo path (if not running from the clone):
 
 ```bash
-./scripts/install-cursor-local.sh
-# or with explicit clone path:
-./scripts/install-cursor-local.sh /path/to/sky-feather-soul-md
+./scripts/install-cursor-global.sh /path/to/sky-feather
 ```
 
-This copies V3 materials into:
+```powershell
+.\scripts\install-cursor-global.ps1 -RepoPath D:\path\to\sky-feather
+```
+
+### Expected output
+
+The installer:
+
+1. Syncs repo content to `~/.cursor/sky-feather/`
+2. Builds flat bundles into `~/.cursor/sky-feather/bundles/`
+3. Sets active character (default: `sky-feather`, or preserves existing from `manifest.json`)
+4. Writes `~/.cursor/skills/sky-feather-character/SKILL.md` with the full inlined bundle
+5. Installs `~/.cursor/commands/character.md`
+6. Removes legacy `~/.cursor/skills/sky-feather-soul/` if present
+7. Prints the User Rules stub and next steps
+
+### Paths created
 
 ```text
-~/.cursor/sky-feather/CORE.md
-~/.cursor/sky-feather/SOUL.md
-~/.cursor/sky-feather/characters/
-~/.cursor/sky-feather/skills/
-~/.cursor/sky-feather/examples/
+~/.cursor/sky-feather/
+  CORE.md, SOUL.md, characters/, skills/, examples/
+  bundles/<character-id>.md
+  active-bundle.md
+  manifest.json
+~/.cursor/skills/sky-feather-character/SKILL.md
+~/.cursor/commands/character.md
 ```
 
-It also keeps the legacy skill mirror:
+---
+
+## One-time User Rules
+
+Paste this **once** into **Cursor Settings -> Rules -> User Rules**:
 
 ```text
-~/.cursor/skills/sky-feather-soul/
+Apply the global skill sky-feather-character on every response.
+It defines the active V3 character profile. Do not use generic-assistant tone.
+Engineering standards come from the inlined CORE section; do not weaken them.
 ```
+
+Do **not** paste full `SOUL.md` or `CORE.md` here. The skill file contains the full active bundle.
+
+After pasting, start a **new** Cursor chat.
+
+---
+
+## Switch character
+
+```bash
+# macOS / Linux / Git Bash
+./scripts/switch-character.sh sumeragi-setsuna
+./scripts/switch-character.sh setsuna    # alias
+```
+
+```powershell
+# Windows PowerShell
+.\scripts\switch-character.ps1 sumeragi-setsuna
+.\scripts\switch-character.ps1 setsuna
+```
+
+Character IDs and aliases: [cursor-quickstart.md](cursor-quickstart.md#character-ids).
+
+After switching, start a **new** Cursor chat for reliable application.
+
+Mid-chat: use the `/character` slash command (best-effort; new chat is still recommended).
+
+---
+
+## Update
+
+When this repository changes (new characters, CORE updates, skill tweaks):
+
+```bash
+cd /path/to/sky-feather
+git pull
+./scripts/install-cursor-global.sh
+```
+
+```powershell
+cd D:\path\to\sky-feather
+git pull
+.\scripts\install-cursor-global.ps1
+```
+
+The installer is **idempotent**. It rebuilds bundles and refreshes the active skill. User Rules rarely need changes after the initial thin stub.
+
+Re-running install preserves your active character if `manifest.json` still references a valid bundle.
+
+---
+
+## Uninstall
+
+Preview what will be removed:
+
+```bash
+./scripts/uninstall-cursor-global.sh --dry-run
+```
+
+```powershell
+.\scripts\uninstall-cursor-global.ps1 -DryRun
+```
+
+### Scopes
+
+| Flag | Removes |
+|------|---------|
+| `--all` (default) | All V1 + V3 global artifacts |
+| `--legacy` / `--v1` | `~/.cursor/skills/sky-feather-soul/`, legacy `.mdc` copies |
+| `--v3` / `--current` | `~/.cursor/sky-feather/`, `sky-feather-character` skill, `commands/character.md` |
+
+```bash
+./scripts/uninstall-cursor-global.sh --all
+./scripts/uninstall-cursor-global.sh --legacy
+./scripts/uninstall-cursor-global.sh --v3
+```
+
+```powershell
+.\scripts\uninstall-cursor-global.ps1
+.\scripts\uninstall-cursor-global.ps1 -Legacy
+.\scripts\uninstall-cursor-global.ps1 -V3
+```
+
+### Clean accidental repo rules
+
+```bash
+./scripts/uninstall-cursor-global.sh --repo-rules ~/Documents/Projects
+```
+
+```powershell
+.\scripts\uninstall-cursor-global.ps1 -RepoRules C:\Users\you\Documents\Projects
+```
+
+### Manual step (required)
+
+Scripts cannot edit Cursor User Rules. After uninstall:
+
+1. Open **Settings -> Rules -> User Rules**
+2. Remove the Sky Feather / SOUL.md / thin-stub block
+3. Start a new chat
+
+**Never removed:** `~/.cursor/skills-cursor/` (Cursor internal built-ins).
+
+---
+
+## Verify
+
+1. Start a **new** Cursor chat (not an old thread).
+2. Ask the same technical question under two profiles, e.g. Sky Feather then Setsuna:
+   ```bash
+   ./scripts/switch-character.sh sky-feather    # new chat, ask question
+   ./scripts/switch-character.sh sumeragi-setsuna   # new chat, same question
+   ```
+3. Expect the **same engineering conclusion** and evidence standards, but **different delivery style**.
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| Generic assistant tone | Old chat thread | Start **new** chat after install/switch |
+| Sky Feather when expecting Setsuna | Stale or duplicate V1 skill | `uninstall --legacy` then re-run install; confirm only `sky-feather-character` skill exists |
+| Rules ignored | Full SOUL still in User Rules | Replace User Rules with thin stub only |
+| Wrong / missing character files | Stale mirror | Re-run `install-cursor-global` |
+| `git status` noise in team repos | `.cursor/rules/sky-feather-soul.mdc` in repo | `uninstall --repo-rules <path>` or delete manually |
+| Windows script blocked | ExecutionPolicy | Use `.cmd` wrappers, or `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser` |
+| bash alias resolution fails | `jq` not installed | Install `jq`, or use PowerShell scripts on Windows |
+
+---
 
 ## Do not use in team repos
 
@@ -66,20 +237,18 @@ It also keeps the legacy skill mirror:
 |-------|-----|
 | `<team-repo>/.cursor/rules/sky-feather-soul.mdc` | Shows up in `git status` and PRs |
 | Symlinking into many work clones | Accidental commits, reviewer confusion |
+| Pasting full character rules into shared repos | Personal config belongs globally |
 
-If symlinks were added previously, remove them with your personal cleanup script at `~/.cursor/sky-feather/uninstall-repo-rules.sh` if installed, or delete the file under each repo’s `.cursor/rules/`.
+Use global install + User Rules instead. See [Important: do not commit into team repos](../README.md#important-do-not-commit-into-team-repos).
 
-## Verify
+---
 
-1. Start a **new** Cursor chat, not an old thread.
-2. Ask the same technical question under two profiles, such as Sky Feather and Setsuna.
-3. Expect the same engineering conclusion and evidence requirements, but different delivery style.
+## Legacy / migration
 
-## Update
+- **V1 (SOUL.md only):** `~/.cursor/skills/sky-feather-soul/` — removed automatically on install; use `uninstall --legacy` to prune manually.
+- **V3.2:** `sky-feather-character` skill with inlined bundles.
+- **`install-cursor-local.sh`:** removed in V3.2; use `install-cursor-global.{sh,ps1,cmd}`.
 
-```bash
-cd /path/to/sky-feather-soul-md
-git pull
-./scripts/install-cursor-local.sh
-# Refresh Cursor User Rules if copied inline
-```
+Full migration notes: [migration-notes.md](migration-notes.md).
+
+Composition metadata (not paste-into-User-Rules): [examples/cursor-sky-feather.md](../examples/cursor-sky-feather.md) and siblings. True flat bundles: `~/.cursor/sky-feather/bundles/` after install.
