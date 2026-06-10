@@ -320,17 +320,30 @@ sf_hermes_soul_max_chars() {
 
 sf_hermes_discord_label() {
   local char_id="$1"
-  local label
-  if command -v jq >/dev/null 2>&1; then
-    jq -r --arg id "${char_id}" '.discordLabels[$id] // $id' "$(sf_hermes_paths_json)"
+  local label paths_file
+  paths_file="$(sf_hermes_paths_json)"
+
+  if [[ ! -f "${paths_file}" ]]; then
+    printf '%s' "${char_id}"
     return 0
   fi
-  label="$(grep "\"${char_id}\":" "$(sf_hermes_paths_json)" 2>/dev/null | sed 's/.*: *"\([^"]*\)".*/\1/' | head -n 1)"
+
+  if command -v jq >/dev/null 2>&1; then
+    label="$(jq -r --arg id "${char_id}" '.discordLabels[$id] // empty' "${paths_file}" 2>/dev/null | head -n 1)"
+    if [[ -n "${label}" && "${label}" != "null" ]]; then
+      printf '%s' "${label}"
+      return 0
+    fi
+  fi
+
+  # Match only discordLabels entries: "sky-feather": "Sky Feather"
+  label="$(grep -F "\"${char_id}\": \"" "${paths_file}" 2>/dev/null | sed -n 's/^[[:space:]]*"[^"]*": "\([^"]*\)".*/\1/p' | head -n 1)"
   if [[ -n "${label}" ]]; then
     printf '%s' "${label}"
-  else
-    printf '%s' "${char_id}"
+    return 0
   fi
+
+  printf '%s' "${char_id}"
 }
 
 sf_backup_hermes_soul() {
@@ -393,8 +406,6 @@ sf_build_hermes_soul_file() {
   if [[ "${size}" -gt "${max}" ]]; then
     echo "warning: composed SOUL.md is ${size} bytes (Hermes truncates at ~${max})" >&2
   fi
-
-  printf '%s' "${output_path}"
 }
 
 sf_sync_hermes_skills() {
