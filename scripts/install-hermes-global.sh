@@ -71,7 +71,12 @@ mkdir -p "${MIRROR}/scripts-lib"
 cp "${SCRIPT_DIR}/lib/characters.json" "${MIRROR}/scripts-lib/characters.json"
 cp "${SCRIPT_DIR}/lib/hermes-paths.json" "${MIRROR}/scripts-lib/hermes-paths.json"
 
-ACTIVE_CHAR="${DEFAULT_CHAR}"
+ACTIVE_CHAR="$(sf_sanitize_single_line "${DEFAULT_CHAR}")"
+if ! sf_is_valid_character_id "${ACTIVE_CHAR}"; then
+  echo "error: invalid default character: ${DEFAULT_CHAR}" >&2
+  exit 1
+fi
+
 existing="$(sf_json_manifest_active "${MIRROR}/manifest.json")"
 if [[ -n "${existing}" ]]; then
   ACTIVE_CHAR="${existing}"

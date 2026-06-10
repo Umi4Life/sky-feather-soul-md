@@ -8,7 +8,29 @@ LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${LIB_DIR}/paths.sh"
 
 sf_characters_json() {
+  local global_json
+  global_json="$(sf_sky_feather_mirror)/scripts-lib/characters.json"
+  if [[ -f "${global_json}" ]]; then
+    printf '%s' "${global_json}"
+    return
+  fi
   printf '%s/lib/characters.json' "$(sf_scripts_dir)"
+}
+
+sf_sync_global_bin() {
+  local repo_scripts_dir="$1"
+  local bin_dir
+  bin_dir="$(sf_global_bin_dir)"
+  mkdir -p "${bin_dir}"
+
+  for name in switch-character.sh switch-character.ps1 switch-character.cmd; do
+    if [[ -f "${repo_scripts_dir}/${name}" ]]; then
+      cp "${repo_scripts_dir}/${name}" "${bin_dir}/${name}"
+    fi
+  done
+
+  rm -rf "${bin_dir}/lib"
+  cp -R "${repo_scripts_dir}/lib" "${bin_dir}/lib"
 }
 
 sf_read_characters_config() {
@@ -71,23 +93,61 @@ sf_list_character_ids() {
   fi
 }
 
+sf_sanitize_single_line() {
+  printf '%s' "$1" | head -n 1 | tr -d '\r'
+}
+
+sf_is_valid_character_id() {
+  local id="$1" valid
+  id="$(sf_sanitize_single_line "${id}")"
+  [[ -z "${id}" ]] && return 1
+  while IFS= read -r valid; do
+    [[ "${id}" == "${valid}" ]] && return 0
+  done < <(sf_list_character_ids)
+  return 1
+}
+
 sf_json_default_character() {
+  local value
   if command -v jq >/dev/null 2>&1; then
-    jq -r '.default' "$(sf_characters_json)"
+    value="$(jq -r '.default' "$(sf_characters_json)")"
+  elif command -v python3 >/dev/null 2>&1; then
+    value="$(python3 - "$(sf_characters_json)" <<'PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as f:
+    print(json.load(f)["default"])
+PY
+)"
   else
-    grep '"default"' "$(sf_characters_json)" | sed 's/.*"default": *"\([^"]*\)".*/\1/'
+    # Must match the top-level key only — not alias "default" inside arrays.
+    value="$(grep -F '"default": "' "$(sf_characters_json)" | sed -n 's/^[[:space:]]*"default": "\([^"]*\)".*/\1/p' | head -n 1)"
   fi
+  sf_sanitize_single_line "${value}"
 }
 
 sf_json_manifest_active() {
-  local manifest="$1"
+  local manifest="$1" value
   if [[ ! -f "${manifest}" ]]; then
     return 0
   fi
   if command -v jq >/dev/null 2>&1; then
-    jq -r '.active // empty' "${manifest}"
+    value="$(jq -r '.active // empty' "${manifest}" 2>/dev/null || true)"
+  elif command -v python3 >/dev/null 2>&1; then
+    value="$(python3 - "${manifest}" <<'PY'
+import json, sys
+try:
+    with open(sys.argv[1], encoding="utf-8") as f:
+        print(json.load(f).get("active", "") or "")
+except (json.JSONDecodeError, OSError):
+    pass
+PY
+)"
   else
-    grep '"active"' "${manifest}" | sed 's/.*"active": *"\([^"]*\)".*/\1/'
+    value="$(grep -F '"active": "' "${manifest}" | sed -n 's/^[[:space:]]*"active": "\([^"]*\)".*/\1/p' | head -n 1)"
+  fi
+  value="$(sf_sanitize_single_line "${value}")"
+  if sf_is_valid_character_id "${value}"; then
+    printf '%s' "${value}"
   fi
 }
 

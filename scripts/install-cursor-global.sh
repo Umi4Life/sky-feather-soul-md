@@ -47,7 +47,12 @@ cp "${SCRIPT_DIR}/lib/cursor-paths.json" "${MIRROR}/scripts-lib/cursor-paths.jso
 sf_build_all_bundles "${REPO_ROOT}" "${BUNDLES_DIR}"
 
 # Active character: preserve from manifest if exists, else default
-ACTIVE_CHAR="${DEFAULT_CHAR}"
+ACTIVE_CHAR="$(sf_sanitize_single_line "${DEFAULT_CHAR}")"
+if ! sf_is_valid_character_id "${ACTIVE_CHAR}"; then
+  echo "error: invalid default character: ${DEFAULT_CHAR}" >&2
+  exit 1
+fi
+
 existing="$(sf_json_manifest_active "${MIRROR}/manifest.json")"
 if [[ -n "${existing}" && -f "${BUNDLES_DIR}/${existing}.md" ]]; then
   ACTIVE_CHAR="${existing}"
@@ -60,6 +65,9 @@ sf_write_skill_file "${ACTIVE_CHAR}" "${MIRROR}/active-bundle.md" "${SKILL_DIR}"
 # Install slash command template
 cp "${REPO_ROOT}/scripts/templates/character-command.md" "${COMMANDS_DIR}/character.md"
 
+# Global bin scripts (workspace-independent switch)
+sf_sync_global_bin "${SCRIPT_DIR}"
+
 echo ""
 echo "Installed V3.2 materials:"
 echo "  ${MIRROR}/"
@@ -67,6 +75,7 @@ echo "  ${MIRROR}/bundles/"
 echo "  ${MIRROR}/active-bundle.md"
 echo "  ${SKILL_DIR}/SKILL.md"
 echo "  ${COMMANDS_DIR}/character.md"
+echo "  $(sf_global_switch_script_sh)"
 echo ""
 echo "Active character: ${ACTIVE_CHAR}"
 
