@@ -89,6 +89,9 @@ Outcomes you should expect:
 | [scripts/install-cursor-global.ps1](scripts/install-cursor-global.ps1) | Global Cursor install (Windows PowerShell) |
 | [scripts/switch-character.sh](scripts/switch-character.sh) | Switch active global character profile |
 | [scripts/uninstall-cursor-global.sh](scripts/uninstall-cursor-global.sh) | Uninstall / prune global Cursor artifacts |
+| [docs/hermes.md](docs/hermes.md) | Hermes install and upgrade from legacy `SOUL.md` |
+| [docs/hermes-discord-personality-handoff.md](docs/hermes-discord-personality-handoff.md) | Handoff: Discord `/personality` (B) + `/hermes character` roadmap (C) |
+| [scripts/install-hermes-global.sh](scripts/install-hermes-global.sh) | Install V3.2 on Hermes (`~/.hermes/SOUL.md` + skills) |
 
 ---
 

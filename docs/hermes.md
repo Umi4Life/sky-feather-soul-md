@@ -151,6 +151,7 @@ ls -la ~/.hermes/SOUL.md ~/.hermes/sky-feather/manifest.json
 
 ## Related docs
 
+- [hermes-discord-personality-handoff.md](hermes-discord-personality-handoff.md) — **next session:** Route B (`/personality`) implement + Route C roadmap
 - [runtime-composition.md](runtime-composition.md) — CORE + character + skills model
 - [migration-notes.md](migration-notes.md) — V1 SOUL.md → V3 framework history
 - [Hermes SOUL.md docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/personality)
