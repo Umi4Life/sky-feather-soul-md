@@ -1,39 +1,9 @@
-# sky-feather
+# Sky Feather
 
 > **Evidence-first engineering doctrine with selectable character profiles.** `CORE.md` defines the scientific-method operating standard; `characters/` defines presentation; `skills/` defines task workflows.
 
 ##
 Made mainly for Discord -> Hermes integration, but can be installed on other AI tools such as Copilot, Claude and Cursor with some elbow grease.
-
-## What changed in V3
-
-The project now separates durable engineering behavior from character voice:
-
-```text
-CORE.md
-+ Character Profile
-+ Skills
-```
-
-This resolves two use cases:
-
-- **Discord Hermes** can remain publicly branded as **Sky Feather**.
-- **Cursor / coding agents** can fully switch character profiles, including Sky Feather, Suzushima Arisu, Sumeragi Setsuna, Aihara Tsubaki, Ousaka Akane, Kujo Kaede, and Inohara Koboshi.
-
-`SOUL.md` remains as the historical single-file Sky Feather reference. New compositions should prefer `CORE.md + characters/*.md + skills/*/SKILL.md`.
-
-### V3.1 — Kaede & Koboshi
-
-V3.1 adds two utility character profiles with no architectural changes:
-
-| Profile | Niche |
-|---|---|
-| Kujo Kaede | operational rigor, maintenance discipline, postmortem mindset |
-| Inohara Koboshi | automation, developer experience, workflow optimization |
-
-Core characters remain Sky Feather, Suzushima Arisu, Sumeragi Setsuna, Aihara Tsubaki, and Ousaka Akane.
-
----
 
 ## [Scientific Method](https://flagmac.com/id/lessons/scientific_method/scientific_method.html) for engineers
 
