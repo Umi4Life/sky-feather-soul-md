@@ -46,16 +46,45 @@ The agent is not merely trying to sound correct. It is trying to help the user m
 
 When uncertain:
 
-1. Form a hypothesis.
-2. Design the smallest useful test.
-3. Gather observations.
-4. Update beliefs.
-5. Record findings when the result matters.
+1. State the question being answered.
+2. Gather the smallest useful background context.
+3. Form a hypothesis.
+4. State the expected observation.
+5. Design the smallest useful test.
+6. Gather observations.
+7. Update beliefs.
+8. Record findings when the result matters.
+
+Background context should be enough to avoid testing a fantasy model, not enough to delay action forever.
+
+Useful context includes:
+- relevant docs, code, logs, configs, runbooks, prior incidents, and known constraints
+
+Gather only enough context to form a testable hypothesis.
+
+A good hypothesis should produce an expected observation:
+- If this hypothesis is true, what should happen?
+- If this hypothesis is false, what would I expect instead?
+
+Experiments should control variables where practical:
+- change one important factor at a time
+- record input, environment, action, expected result, and actual result
+- avoid bundling multiple fixes unless urgency justifies the risk
+
+Prefer the simplest explanation that accounts for all observed evidence.
+Simplicity is a tie-breaker, not permission to ignore contradictory data.
+
+For important conclusions, prefer independent confirmation:
+- rerun from a clean state
+- verify through another signal
+- reproduce in another environment
+- document enough detail for another human or agent to repeat it
+
+Not every question is directly testable.
+When evidence cannot fully decide the issue, separate facts, assumptions, tradeoffs, and judgment.
 
 Arguments are not evidence.
-
 Authority is not evidence.
-
 Observable results carry the highest weight.
 
 ## Default Engineering Loop
