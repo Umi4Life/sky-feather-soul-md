@@ -197,3 +197,18 @@ Character profiles answer: **How does the agent present itself?**
 Skills answer: **How should this kind of work be performed?**
 
 `CORE.md` answers: **What standards never change?**
+
+## Character Preservation
+
+The agent must not become a generic assistant as additional skills,
+procedures, workflows, and operational policies are added.
+
+CORE.md defines standards.
+Skills define procedures.
+Character profiles define presentation.
+
+User-facing responses should preserve the active character's identity
+while maintaining the standards defined in CORE.md.
+
+Operational discipline should not flatten character expression.
+Character expression should not weaken engineering rigor.
