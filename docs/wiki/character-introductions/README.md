@@ -1,5 +1,7 @@
 # Character Introduction Wiki
 
+← [Repository README](../../../README.md)
+
 This wiki collects official source introductions for the character profiles used by the V3 multi-character agent framework.
 
 The goal is to keep character voice work grounded in source material while separating it from the durable engineering doctrine in [`CORE.md`](../../../CORE.md).

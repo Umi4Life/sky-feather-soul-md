@@ -1,11 +1,10 @@
 # Sky Feather
 
-> **Evidence-first engineering doctrine with selectable character profiles.** `CORE.md` defines the scientific-method operating standard; `characters/` defines presentation; `skills/` defines task workflows.
+> **Evidence-first engineering built on the scientific method.** [`CORE.md`](CORE.md) defines the operating standard that never changes; [`characters/`](characters/) and [`skills/`](skills/) add presentation and task workflows on top.
 
-##
-Made mainly for Discord -> Hermes integration, but can be installed on other AI tools such as Copilot, Claude and Cursor with some elbow grease.
+Made mainly for Discord → Hermes, with install paths for Cursor, GitHub Copilot, Claude Code, and other agents.
 
-## [Scientific Method](https://flagmac.com/id/lessons/scientific_method/scientific_method.html) for engineers
+## [Scientific method](https://flagmac.com/id/lessons/scientific_method/scientific_method.html) for engineers
 
 <div align="center">
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/The_Scientific_Method.svg/1920px-The_Scientific_Method.svg.png" width="50%" alt="The Scientific Method">
@@ -42,91 +41,112 @@ Outcomes you should expect:
 - Smaller, falsifiable experiments instead of large speculative diffs
 - Better incident learning through engineering journal patterns
 
+Full doctrine: [`CORE.md`](CORE.md) (Permanent Principles, Evidence Standards, Failure Handling). Workflow module: [`skills/scientific-method/SKILL.md`](skills/scientific-method/SKILL.md).
+
 ---
 
-## Repository contents
+## Quick links
+
+- [CORE.md](CORE.md) — durable doctrine
+- [Character Introduction Wiki](docs/wiki/character-introductions/README.md)
+- [Cursor quickstart](docs/cursor-quickstart.md)
+- [Hermes install](docs/hermes.md)
+
+---
+
+## Characters
+
+Official-source intros, profile art, and game metadata live in the **[Character Introduction Wiki](docs/wiki/character-introductions/README.md)**.
+
+Runtime voice files for agent composition are in [`characters/`](characters/).
+
+| Profile | Best for | Cursor metadata |
+|---|---|---|
+| Sky Feather | general engineering, Discord Hermes, homelab, blogging | [example](examples/cursor-sky-feather.md) |
+| Suzushima Arisu | cozy lab, experiments, tinkering | [example](examples/cursor-suzushima-arisu.md) |
+| Sumeragi Setsuna | architecture review, RFC critique, planning | [example](examples/cursor-sumeragi-setsuna.md) |
+| Aihara Tsubaki | pair programming, debugging, code review | [example](examples/cursor-aihara-tsubaki.md) |
+| Ousaka Akane | brainstorming, ideation, ambitious planning | [example](examples/cursor-ousaka-akane.md) |
+| Kujo Kaede | ops review, cleanup, postmortems, reliability | [example](examples/cursor-kaede.md) |
+| Inohara Koboshi | automation, scripting, CI/CD, workflow optimization | [example](examples/cursor-koboshi.md) |
+
+Character profiles may change tone, phrasing, humor, emotional posture, and catchphrases. They must not change correctness standards, safety behavior, evidence requirements, or `CORE.md` doctrine.
+
+---
+
+## How it fits together
+
+```text
+CORE.md
++ Character Profile
++ Skills
+```
+
+See [docs/runtime-composition.md](docs/runtime-composition.md) for composition rules and load order. [`SOUL.md`](SOUL.md) remains the historical single-file Sky Feather reference; new setups should prefer the split layout above.
+
+---
+
+## Get started
+
+| Surface | Doc |
+|---|---|
+| Cursor | [quickstart](docs/cursor-quickstart.md) → [full guide](docs/cursor.md) |
+| Hermes | [hermes.md](docs/hermes.md) |
+| GitHub Copilot | [github-copilot.md](docs/github-copilot.md) |
+| Claude Code | [claude-code.md](docs/claude-code.md) |
+| Other agents | [other-agents.md](docs/other-agents.md) |
+
+**Cursor (summary):** clone this repo → run the global installer → paste the one-time User Rules stub → `switch-character` → start a new chat.
+
+---
+
+## Repository map
+
+### Core
 
 | Path | Purpose |
 |------|---------|
 | [CORE.md](CORE.md) | Durable character-neutral engineering doctrine |
 | [SOUL.md](SOUL.md) | Historical single-file Sky Feather reference |
-| [characters/](characters/) | Character profiles: Sky Feather, Suzushima Arisu, Sumeragi Setsuna, Aihara Tsubaki, Ousaka Akane, Kujo Kaede, Inohara Koboshi |
-| [character-introductions/](docs/wiki/character-introductions/README.md) | Official-source character introduction wiki and profiles |
+| [characters/](characters/) | Character voice profiles |
 | [skills/](skills/) | Workflow modules: scientific method, debugging, architecture review, journal, GSD |
 | [examples/](examples/) | Runtime composition examples for Discord Hermes and Cursor |
+
+### Wiki
+
+| Path | Purpose |
+|------|---------|
+| [Character Introduction Wiki](docs/wiki/character-introductions/README.md) | Official-source character intros, art, and metadata |
+
+### Docs
+
+| Path | Purpose |
+|------|---------|
 | [docs/runtime-composition.md](docs/runtime-composition.md) | How CORE + character profiles + skills compose |
-| [docs/character-switching.md](docs/character-switching.md) | Discord branding and Cursor full character switching rules |
-| [docs/migration-notes.md](docs/migration-notes.md) | V3 migration notes from single SOUL.md |
-| [docs/cursor-quickstart.md](docs/cursor-quickstart.md) | One-page Cursor install / switch / update cheat sheet |
+| [docs/character-switching.md](docs/character-switching.md) | Discord branding and Cursor character switching |
+| [docs/migration-notes.md](docs/migration-notes.md) | Migration notes from single `SOUL.md` |
+| [docs/cursor-quickstart.md](docs/cursor-quickstart.md) | One-page Cursor install / switch / update |
+| [docs/cursor.md](docs/cursor.md) | Full Cursor install, update, uninstall |
+| [docs/hermes.md](docs/hermes.md) | Hermes install and upgrade |
+| [docs/roadmap.md](docs/roadmap.md) | Shipped work, planned initiatives, validation logs |
+
+### Scripts
+
+| Path | Purpose |
+|------|---------|
 | [scripts/install-cursor-global.sh](scripts/install-cursor-global.sh) | Global Cursor install (macOS / Linux / Git Bash) |
 | [scripts/install-cursor-global.ps1](scripts/install-cursor-global.ps1) | Global Cursor install (Windows PowerShell) |
 | [scripts/switch-character.sh](scripts/switch-character.sh) | Switch active global character profile |
 | [scripts/uninstall-cursor-global.sh](scripts/uninstall-cursor-global.sh) | Uninstall / prune global Cursor artifacts |
-| [docs/hermes.md](docs/hermes.md) | Hermes install and upgrade from legacy `SOUL.md` |
-| [docs/roadmap.md](docs/roadmap.md) | Roadmap: shipped work, planned initiatives, validation logs |
-| [scripts/install-hermes-global.sh](scripts/install-hermes-global.sh) | Install V3.2 on Hermes (`~/.hermes/SOUL.md` + skills) |
+| [scripts/install-hermes-global.sh](scripts/install-hermes-global.sh) | Install on Hermes (`~/.hermes/SOUL.md` + skills) |
 
 ---
 
-## Character profiles
+## Discord Hermes branding
 
-| Profile | Best for | Cursor example |
-|---|---|---|
-| Sky Feather | general engineering, Discord Hermes, homelab, blogging | [examples/cursor-sky-feather.md](examples/cursor-sky-feather.md) |
-| Suzushima Arisu | cozy lab, experiments, tinkering | [examples/cursor-suzushima-arisu.md](examples/cursor-suzushima-arisu.md) |
-| Sumeragi Setsuna | architecture review, RFC critique, planning | [examples/cursor-sumeragi-setsuna.md](examples/cursor-sumeragi-setsuna.md) |
-| Aihara Tsubaki | pair programming, debugging, code review | [examples/cursor-aihara-tsubaki.md](examples/cursor-aihara-tsubaki.md) |
-| Ousaka Akane | brainstorming, ideation, ambitious planning | [examples/cursor-ousaka-akane.md](examples/cursor-ousaka-akane.md) |
-| Kujo Kaede | ops review, cleanup, postmortems, reliability | [examples/cursor-kaede.md](examples/cursor-kaede.md) |
-| Inohara Koboshi | automation, scripting, CI/CD, workflow optimization | [examples/cursor-koboshi.md](examples/cursor-koboshi.md) |
+Discord Hermes stays publicly branded as **Sky Feather**. Other profiles act as internal mode inspiration — use labels like `Sky Feather: Architect Mode`, not casual identity swaps (`I am now Setsuna.`).
 
-Character profiles may change tone, phrasing, humor, emotional posture, and catchphrases.
-
-They must not change correctness standards, safety behavior, evidence requirements, or `CORE.md` doctrine.
-
----
-
-## Discord Hermes branding rule
-
-Discord Hermes should remain publicly branded as:
-
-```text
-Sky Feather
-```
-
-Other character profiles may be used internally as mode inspiration, but Discord should not casually say:
-
-```text
-I am now Setsuna.
-I am now Arisu.
-```
-
-unless explicitly requested.
-
-Better public phrasing:
-
-```text
-Sky Feather: Architect Mode
-Sky Feather: Pair-Programming Mode
-Sky Feather: Cozy Lab Mode
-Sky Feather: Brainstorm Mode
-Sky Feather: Ops Mode
-Sky Feather: Automation Mode
-```
-
-See [examples/discord-hermes-sky-feather.md](examples/discord-hermes-sky-feather.md).
-
----
-
-## Use in Cursor
-
-1. Clone this repo somewhere on your machine.
-2. Run the global installer: [docs/cursor-quickstart.md](docs/cursor-quickstart.md).
-3. Paste the one-time User Rules stub (see [docs/cursor.md](docs/cursor.md)).
-4. Switch characters with `switch-character` — full guide in [docs/cursor.md](docs/cursor.md).
-5. Start a new chat and verify evidence-first engineering with character-appropriate delivery.
-
-Other agents: [GitHub Copilot](docs/github-copilot.md) · [Claude Code](docs/claude-code.md) · [Other agents](docs/other-agents.md)
+Preset keys, public labels, and switching rules: [docs/character-switching.md](docs/character-switching.md). Default composition: [examples/discord-hermes-sky-feather.md](examples/discord-hermes-sky-feather.md).
 
 ---
 
